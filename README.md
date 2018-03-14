@@ -18,7 +18,9 @@ Once those are loaded, you can run the various tests by running the scripts list
 Did you find bugs, or have any kind of feedback? Let us know! 
 
 Stefano Massei --- [stefano.massei@epfl.ch](mailto:stefano.massei@epfl.ch)
+
 Mariarosa Mazza --- [mariarosa.mazza@ipp.mpg.de](mailto:mariarosa.mazza@ipp.mpg.de)
+
 Leonardo Robol --- [leonardo.robol@isti.cnr.it](mailto:leonardo.robol@isti.cnr.it)
 
 
