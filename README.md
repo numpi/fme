@@ -3,7 +3,7 @@
 This repository contains the MATLAB code required to reproduce the numerical experiments contained in the paper "*Fast solvers for 2D fractional differential equations using rank structured matrices*", S. Massei, M. Mazza, L. Robol, 2018. 
 
 ## Code structure
-To reproduce the tests, you will need to download and add to your MATLAB path the [`hm-toolbox`](https://github.com/numpi/hm-toolbox) and the [`rk-toolbox`](http://guettel.com/rktoolbox/) packages. Installation of those is as simple as unpacking them somewhere, and adding them to your MATLAB path by:
+To reproduce the tests, you will need to download and add to your MATLAB path the [`hm-toolbox`](https://github.com/numpi/hm-toolbox) and the [`rktoolbox`](http://guettel.com/rktoolbox/) packages. Installation of those is as simple as unpacking them somewhere, and adding them to your MATLAB path by:
 
     >> addpath /path/to/hm-toolbox;
     >> addpath /path/to/rktoolbox; addpath /path/to/rktoolbox/utils;
