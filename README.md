@@ -1,4 +1,4 @@
-# Solving 1D and 2D fractional PDEs by rank-structured matrices
+# Solving fractional PDEs by rank-structured matrices
 
 This repository contains the MATLAB code required to reproduce the numerical experiments contained in the paper "*Fast solvers for 2D fractional differential equations using rank structured matrices*", S. Massei, M. Mazza, L. Robol, 2018. 
 
