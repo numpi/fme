@@ -1,19 +1,26 @@
 function Experiment1D
 
     % Values of N in the paper
-    Ns = 2.^(10 : 17);
+    Ns = 2.^(13 : 17);
     
     hmoption('threshold', 1e-7);
     hmoption('block-size', 256);
     
+    
     data = zeros(length(Ns), 6);
     
-    for experiment = [1, 2]
+    for experiment = [2, 2]
 
         if experiment == 1
             alpha = 1.8;
+            
+            % Select GMRES accuracy to match HODLR one
+            gmres_tol = 1e-6;
         else
             alpha = 1.2;
+            
+            % Select GMRES accuracy to match HODLR one
+            gmres_tol = 1e-7;
         end
         for i = 1 : length(Ns)
             n = Ns(i);
@@ -29,7 +36,7 @@ function Experiment1D
             A = hm('diagonal', ni*ones(n,1)) + hm('diagonal', d1) * A + hm('diagonal', d2) * A';
 
             xi = t;
-            b=(-32*(xi.^2+1/8*(2-xi).^2.*(8+xi.^2)-3/(3-alpha)*(xi.^3+(2-xi).^3)+3/((4-alpha)*(3-alpha))*(xi.^4+(2-xi).^4)))';
+            b=h^(alpha)*(-32*(xi.^2+1/8*(2-xi).^2.*(8+xi.^2)-3/(3-alpha)*(xi.^3+(2-xi).^3)+3/((4-alpha)*(3-alpha))*(xi.^4+(2-xi).^4)))';
 
             if experiment == 1
                 P = ( spdiags(reshape(d1 + d2,n,1), 0, n, n) * spdiags(ones(n,1) * [-1 2 -1], -1:1, n, n) + spdiags(ni*ones(n,1), 0, n, n));
@@ -43,8 +50,8 @@ function Experiment1D
             data(i, 4) = timeit(@() U \ (L \ b));
             x = U \ (L \ b);
             data(i, 5) = norm(A*x-b)/norm(x);
-            data(i, 1) = timeit(@() toeplitz_system(am, ap, d1, d2, ni, b, P));
-            [x, data(i, 2)] = toeplitz_system(am, ap, d1, d2, ni, b, P);
+            data(i, 1) = timeit(@() toeplitz_system(am, ap, d1, d2, ni, b, P, gmres_tol));
+            [x, data(i, 2)] = toeplitz_system(am, ap, d1, d2, ni, b, P, gmres_tol);
             data(i,3) = norm(mat_mul1D(am, ap, d1, d2, ni, x) - b)/norm(x);
         end
         

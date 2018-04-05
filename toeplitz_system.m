@@ -1,4 +1,4 @@
-function [x, it] = toeplitz_system(am, ap, d1, d2, ni, b, P)
+function [x, it] = toeplitz_system(am, ap, d1, d2, ni, b, P, gmres_tol)
 %TOEPLITZ_SYSTEM Solve a Toeplitz linear system by means of PGMRES. 
 %
 % [X, IT] = TOEPLITZ_SYSTEM(AM, AP, D1, D2, NI, B, P) solves the linear
@@ -10,8 +10,12 @@ function [x, it] = toeplitz_system(am, ap, d1, d2, ni, b, P)
 %     The solution X is returned along with the number of iterations
 %     required. 
 
+    if ~exist('gmres_tol', 'var')
+        gmres_tol = 1e-8;
+    end
+
 	[x,~,~,it] = gmres(@(x) mat_mul1D(am, ap, d1, d2, ni, x), ...
-			b, [], 1e-7, 1000, P); 
+			b, [], gmres_tol, 1000, P); 
         
 	it = it(2);
 end
