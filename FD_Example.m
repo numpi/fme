@@ -4,7 +4,7 @@ hmoption('threshold', 1e-8);
 
 Ns = 2.^( 9 : 16 );
 
-for k = 3 : 4
+for k = 1 : 4
 
 	switch mod(k, 2)
 		case 1
