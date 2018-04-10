@@ -5,7 +5,7 @@ show_plot = false;
 
 Ns = 2.^( 9 : 16 );
 
-for k = 3 : 3
+for k = 1 : 3
 
 	switch mod(k, 2)
 		case 1
