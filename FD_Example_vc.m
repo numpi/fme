@@ -1,6 +1,6 @@
 function FD_Example_vc
 
-hmoption('threshold', 1e-12);
+hmoption('threshold', 1e-8);
 
 Ns = 2.^(9 : 16);
 
@@ -71,7 +71,7 @@ for k = 1 : 4
             D1 = .5 * tau1 * spdiags(pp1, 0, n, n);
             D2 = .5 * tau1 * spdiags(pm1, 0, n, n);
             
-            if beta1 < .5
+            if beta1 < 1.5 && false % Disabled because P2 is more efficient
                 B = spdiags(ones(n,1) * [ 1 -1 ], 0 : 1, n, n);
             else
                 B = spdiags(ones(n,1) * [ -1 2 -1 ], -1 : 1, n, n);
@@ -86,7 +86,7 @@ for k = 1 : 4
             
             D1 = .5 * tau2 * spdiags(qp1, 0, n, n);
             D2 = .5 * tau2 * spdiags(qm1, 0, n, n);
-            if beta2 < .5
+            if beta2 < 1.5 && false % Disabled because P2 is more efficient
                 B = spdiags(ones(n,1) * [ 1 -1 ], 0 : 1, n, n);
             else
                 B = spdiags(ones(n,1) * [ -1 2 -1 ], -1 : 1, n, n);
@@ -106,9 +106,9 @@ for k = 1 : 4
             VV = [f2, f2t, Xv ];
             
             [UU, VV] = compress_low_rank(UU, VV, 1e-6);
-            [Xu, Xv] = ek_sylv(L1s, L2s, UU, VV, inf, ...
+            [Xu, Xv] = ek_sylv(L1s, L2s, -UU, VV, inf, ...
                 @(r,nrm) r < 1e-6 * nrm * n, false, 'fro');
-			% norm(L1 * Xu * Xv' + Xu * Xv' * L2' - UU * VV') / norm(Xu * Xv')
+			% norm(L1 * Xu * Xv' + Xu * Xv' * L2' + UU * VV') / norm(Xu * Xv')
 			ranks(i) = max(ranks(i), size(Xu, 2));
 		end
 

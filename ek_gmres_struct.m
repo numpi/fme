@@ -21,7 +21,7 @@ S.isreal = true;
 
     function y = gmres_solve(nu, mu, Afun, Pfun, x)
         if nu > mu
-            y = x; 
+            y = x;
             for j = 1 : size(y, 2)
                 [y(:,j),~] = gmres(@(x) Afun(x), x(:,j), ...
                     15, 1e-7, size(x, 1), Pfun);
