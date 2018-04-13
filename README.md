@@ -1,6 +1,6 @@
 # Solving fractional PDEs by rank-structured matrices
 
-This repository contains the MATLAB code required to reproduce the numerical experiments contained in the paper "*Fast solvers for 2D fractional differential equations using rank structured matrices*", S. Massei, M. Mazza, L. Robol, 2018. 
+This repository contains the MATLAB code required to reproduce the numerical experiments contained in the paper "*Fast solvers for 2D fractional diffusion equations using rank structured matrices*", S. Massei, M. Mazza, L. Robol, 2018. 
 
 ## Code structure
 To reproduce the tests, you will need to download and add to your MATLAB path the [`hm-toolbox`](https://github.com/numpi/hm-toolbox) and the [`rktoolbox`](http://guettel.com/rktoolbox/) packages. Installation of those is as simple as unpacking them somewhere, and adding them to your MATLAB path by:
