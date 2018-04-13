@@ -41,7 +41,7 @@ for k = 1 : 4
         L2 = tau2 * L2 + .5 * hm('diagonal', ones(n,1)); 
 		
 		nrm = max( norm(L1), norm(L2) );
-        nrm = 10 / h;
+        % nrm = 10 / h;
         
         % Avoid any normalization, for now
         nrm = 1;
@@ -112,10 +112,10 @@ for k = 1 : 4
             %
 			% norm(L1 * Xu * Xv' + Xu * Xv' * L2' + UU * VV', 'fro') / norm(Xu * Xv', 'fro')
 			ranks(i) = max(ranks(i), size(Xu, 2));
-        end     
+        end
 
 		times(i) = toc;
-
+        
 		fprintf('N = %d, time = %e, rank = %d\n', n, times(i), ranks(i));
 	end
 	

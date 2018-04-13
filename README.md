@@ -14,6 +14,8 @@ Once those are loaded, you can run the various tests by running the scripts list
  2. `FD_Example.m` and `FD_Example_vc.m` contain the examples of the 2D solver for the finite difference formulation, discretized using implicit Euler in time. The files implement the constant and variable coefficients case, respectively.
  3. `FE_Example.m` contains the finite element case, and is completely analogous to `FD_Example.m`. 
 
+You might want to inspect the file <code>RunAllExperiments.m</code> for further information. 
+
 ## Contact
 Did you find bugs, or have any kind of feedback? Let us know! 
 

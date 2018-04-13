@@ -24,7 +24,7 @@ S.isreal = true;
             y = x;
             for j = 1 : size(y, 2)
                 [y(:,j),~] = gmres(@(x) Afun(x), x(:,j), ...
-                    15, 1e-7, size(x, 1), Pfun);
+                    [], 1e-7, 150, Pfun);
             end
             y = nu \ y;
         else
