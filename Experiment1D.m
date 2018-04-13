@@ -5,11 +5,10 @@ function Experiment1D
     
     hmoption('threshold', 1e-7);
     hmoption('block-size', 256);
+        
+    data = zeros(length(Ns), 7);
     
-    
-    data = zeros(length(Ns), 6);
-    
-    for experiment = [2, 2]
+    for experiment = [1, 2]
 
         if experiment == 1
             alpha = 1.8;
@@ -53,6 +52,7 @@ function Experiment1D
             data(i, 1) = timeit(@() toeplitz_system(am, ap, d1, d2, ni, b, P, gmres_tol));
             [x, data(i, 2)] = toeplitz_system(am, ap, d1, d2, ni, b, P, gmres_tol);
             data(i,3) = norm(mat_mul1D(am, ap, d1, d2, ni, x) - b)/norm(x);
+            data(i,7) = qsrank(A);
         end
         
         if experiment == 1

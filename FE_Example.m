@@ -18,6 +18,7 @@ for k = 1 : 2 : 3
 
 	times = zeros(1, length(Ns));
 	ranks = zeros(1, length(Ns));
+        qsranks = zeros(1, length(Ns));
 
 	for i = 1 : length(Ns)
 		n = Ns(i);
@@ -45,6 +46,7 @@ for k = 1 : 2 : 3
         if k <= 2        
             L1s = ek_struct(L1, false);
             L2s = ek_struct(L2, false);
+            qsranks(i) = max(qsrank(L1), qsrank(L2));
         else
             pp1 = ones(n, 1); % pp(t', beta1);
             pm1 = ones(n, 1); % pm(t', beta1);
@@ -123,10 +125,10 @@ for k = 1 : 2 : 3
 
 		times(i) = toc;
 
-		fprintf('N = %d, time = %e, rank = %d\n', n, times(i), ranks(i));
+		fprintf('N = %d, time = %e, rank = %d, qsrank = %d\n', n, times(i), ranks(i), qsranks(i));
 	end
 	
-	dlmwrite(sprintf('fe-times_%d.dat', k), [ Ns ; times ; ranks ]', '\t');
+	dlmwrite(sprintf('fe-times_%d.dat', k), [ Ns ; times ; ranks ; qsranks ]', '\t');
 end
 
 V = [ dlmread('fe-times_1.dat'), dlmread('fe-times_3.dat') ];
