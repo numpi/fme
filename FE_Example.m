@@ -5,7 +5,7 @@ show_plot = false;
 
 Ns = 2.^( 9 : 16 );
 
-for k = 1 : 2 : 3
+for k = 1 :  4
 
 	switch mod(k, 2)
 		case 1
@@ -33,20 +33,24 @@ for k = 1 : 2 : 3
         
         L1 = L1 + L1';
         L2 = L2 + L2';
+
+	% Mass matrix
+        sM = spdiags(ones(n, 1) * [1/6 2/3 1/6], -1:1, n, n);
+        M = hm('banded', sM, 1, 1);
         
         % Choose a reasonable time step for this problem
-        dt = .1;
+        dt = .001;
         
-        L1 = dt * L1 - eye(n, 'like', L1) / 2;
-        L2 = dt * L2 - eye(n, 'like', L2) / 2;
-        
+        L1 = dt * (M\L1) - eye(n, 'like', L1) / 2;
+        L2 = dt * (M\L2) - eye(n, 'like', L2) / 2;
+	
 		tic;
 		ranks(i) = 0;
         
         if k <= 2        
             L1s = ek_struct(L1, false);
             L2s = ek_struct(L2, false);
-            qsranks(i) = max(qsrank(L1), qsrank(L2));
+            qsranks(i) = max(hmrank(L1), hmrank(L2));
         else
             pp1 = ones(n, 1); % pp(t', beta1);
             pm1 = ones(n, 1); % pm(t', beta1);
@@ -65,7 +69,11 @@ for k = 1 : 2 : 3
             end
             
             [LL1, UU1] = lu(D1 * B + D2 * B' + .5 * speye(n));
-            L1s = ek_gmres_struct(@(x) nrm \ mat_mul1D(am1 * tau1, ap1 * tau1, pp1, pm1, .5, x), ...
+	    % Construct symbol of the Toeplitz part of the linear coefficients
+	    tam1 = am1 * tau1;
+	    tam1(1) = tam1(1) - .25 * sM(1,1); tam1(2) = tam1(2) - .25 * sM(2,1);
+            tap1 = ap1 * tau1; tap1(1) = tam1(1); tap1(2) = tap1(2) - sM(1,2) * .25;
+            L1s = ek_gmres_struct(@(x) sM \ (nrm \ mat_mul1D(tam1, tap1, pp1, pm1, 0, x)), ...
                 @(x) UU1 \ (LL1 \ x), norm(L1));
             
             qp1 = ones(n, 1); % qp(t', beta2);
@@ -80,7 +88,11 @@ for k = 1 : 2 : 3
             end
             
             [LL2, UU2] = lu(D1 * B + D2 * B' + .5 * speye(n));
-            L2s = ek_gmres_struct(@(x) nrm \ mat_mul1D(am2 * tau2, ap2 * tau2, qp1, qm1, .5, x), ...
+            tam2 = am2 * tau2;
+	        tam2(1) = tam2(1) - sM(1,1) * .25; tam2(2) = tam2(2) - sM(2,1) * .25;
+            tap2 = ap2 * tau2; tap2(1) = tam2(1); tap2(2) = tap2(2) - sM(1,2) * .25;
+
+            L2s = ek_gmres_struct(@(x) nrm \ mat_mul1D(tam2, tap2, qp1, qm1, 0, x), ...
                 @(x) UU2 \ (LL2 \ x), norm(L2));       
         end
         
@@ -102,11 +114,12 @@ for k = 1 : 2 : 3
         
             [XX, YY] = meshgrid(t, t);
             mesh(XX, YY, Xu * Xv');
+	    pause
         end
         
         for j = 1 : timesteps - 1
             % Make sure the RHS is in compressed form
-            [UU, VV] = compress_low_rank([dt * f1, Xu], [f2, Xv], 1e-6);
+            [UU, VV] = compress_low_rank([dt * f1, -Xu], [f2, Xv], 1e-6);
 
 			[Xu, Xv] = ek_sylv(L1s, L2s, -UU, VV, inf, ...
                 @(r, nrm) r < 1e-6 * nrm * n, false, 'fro');
@@ -131,8 +144,8 @@ for k = 1 : 2 : 3
 	dlmwrite(sprintf('fe-times_%d.dat', k), [ Ns ; times ; ranks ; qsranks ]', '\t');
 end
 
-V = [ dlmread('fe-times_1.dat'), dlmread('fe-times_3.dat') ];
-dlmwrite('fe-times_13.dat', V, '\t');
+%V = [ dlmread('fe-times_1.dat'), dlmread('fe-times_3.dat') ];
+%dlmwrite('fe-times_13.dat', V, '\t');
 
 end
 
