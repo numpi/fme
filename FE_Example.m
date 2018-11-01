@@ -39,7 +39,7 @@ for k = 1 :  4
         M = hm('banded', sM, 1, 1);
         
         % Choose a reasonable time step for this problem
-        dt = .001;
+        dt = .1;
         
         L1 = dt * (M\L1) - eye(n, 'like', L1) / 2;
         L2 = dt * (M\L2) - eye(n, 'like', L2) / 2;
