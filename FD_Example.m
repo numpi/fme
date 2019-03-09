@@ -17,7 +17,7 @@ for k = 1 : 4
 
 	times = zeros(1, length(Ns));
 	ranks = zeros(1, length(Ns));
-        qsranks = zeros(1, length(Ns));
+    qsranks = zeros(1, length(Ns));
 
 	for i = 1 : length(Ns)
 		n = Ns(i);
@@ -60,7 +60,7 @@ for k = 1 : 4
         if k <= 2        
             L1s = ek_struct(L1, false);
             L2s = ek_struct(L2, false);
-            qsranks(i) = max(qsrank(L1), qsrank(L2));
+            qsranks(i) = max(hmrank(L1), hmrank(L2));
         else
             pp1 = ones(n, 1); % pp(t', beta1);
             pm1 = ones(n, 1); % pm(t', beta1);
@@ -112,7 +112,7 @@ for k = 1 : 4
             % sufficiently small, if the problem is sufficiently small
             % scale. 
             %
-			% norm(L1 * Xu * Xv' + Xu * Xv' * L2' + UU * VV', 'fro') / norm(Xu * Xv', 'fro')
+            % norm(L1 * Xu * Xv' + Xu * Xv' * L2' - UU * VV', 'fro') / norm(Xu * Xv', 'fro')
 			ranks(i) = max(ranks(i), size(Xu, 2));
         end
 
