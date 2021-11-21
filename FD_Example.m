@@ -1,6 +1,6 @@
 function FD_Example
 
-hmoption('threshold', 1e-8);
+hodlroption('threshold', 1e-8);
 
 Ns = 2.^( 9 : 16 );
 
@@ -27,8 +27,8 @@ for k = 1 : 4
         [am1, ap1] = fractional_symbol(beta1, n);
         [am2, ap2] = fractional_symbol(beta2, n);
         
-        L1 = hm('toeplitz', am1, ap1, n);
-        L2 = hm('toeplitz', am2, ap2, n);
+        L1 = hodlr('toeplitz', am1, ap1, n);
+        L2 = hodlr('toeplitz', am2, ap2, n);
         
         L1 = L1 + L1';
         L2 = L2 + L2';
@@ -38,8 +38,8 @@ for k = 1 : 4
         tau1 = -dt / h^beta1; 
         tau2 = -dt / h^beta2;
          
-        L1 = tau1 * L1 + .5 * hm('diagonal', ones(n,1));
-        L2 = tau2 * L2 + .5 * hm('diagonal', ones(n,1)); 
+        L1 = tau1 * L1 + .5 * hodlr('diagonal', ones(n,1));
+        L2 = tau2 * L2 + .5 * hodlr('diagonal', ones(n,1)); 
 		
 		nrm = max( norm(L1), norm(L2) );
         % nrm = 10 / h;
@@ -60,7 +60,7 @@ for k = 1 : 4
         if k <= 2        
             L1s = ek_struct(L1, false);
             L2s = ek_struct(L2, false);
-            qsranks(i) = max(hmrank(L1), hmrank(L2));
+            qsranks(i) = max(hodlrrank(L1), hodlrrank(L2));
         else
             pp1 = ones(n, 1); % pp(t', beta1);
             pm1 = ones(n, 1); % pm(t', beta1);

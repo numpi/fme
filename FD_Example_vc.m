@@ -1,6 +1,6 @@
 function FD_Example_vc
 
-hmoption('threshold', 1e-8);
+hodlroption('threshold', 1e-8);
 
 Ns = 2.^(9 : 16);
 
@@ -22,7 +22,7 @@ for k = 1 : 4
 
 	times = zeros(1, length(Ns));
 	ranks = zeros(1, length(Ns));
-        qsranks = zeros(1, length(Ns));
+    qsranks = zeros(1, length(Ns));
 
 	for i = 1 : length(Ns)
 		n = Ns(i);
@@ -33,21 +33,21 @@ for k = 1 : 4
         [am1, ap1] = fractional_symbol(beta1, n);
         [am2, ap2] = fractional_symbol(beta2, n);
         
-        L1 = hm('toeplitz', am1, ap1, n);
-        L2 = hm('toeplitz', am2, ap2, n);
+        L1 = hodlr('toeplitz', am1, ap1, n);
+        L2 = hodlr('toeplitz', am2, ap2, n);
         
-        L1 = hm('diagonal', pp(t', beta1)) * L1' ...
-            + hm('diagonal', pm(t', beta1)) * L1;
-        L2 = hm('diagonal', qp(t', beta2)) * L2' ...
-            + hm('diagonal', qm(t', beta2)) * L2;
+        L1 = hodlr('diagonal', pp(t', beta1)) * L1' ...
+            + hodlr('diagonal', pm(t', beta1)) * L1;
+        L2 = hodlr('diagonal', qp(t', beta2)) * L2' ...
+            + hodlr('diagonal', qm(t', beta2)) * L2;
         
         % This is the same time step that they have in the code Stoll-Breiten-Simoncini
         dt = 1;
         tau1 = dt / h^beta1; 
         tau2 = dt / h^beta2;
          
-        L1 = tau1 * L1 + .5 * hm('diagonal', ones(n,1));
-        L2 = tau2 * L2 + .5 * hm('diagonal', ones(n,1));        
+        L1 = tau1 * L1 + .5 * hodlr('diagonal', ones(n,1));
+        L2 = tau2 * L2 + .5 * hodlr('diagonal', ones(n,1));        
 		
 		% nrm = max(norm(L1), norm(L2));
         % Avoid any normalization, for now
@@ -65,7 +65,7 @@ for k = 1 : 4
         if k <= 2        
             L1s = ek_struct(L1, false);
             L2s = ek_struct(L2, false);
-            qsranks(i) = max(qsrank(L1), qsrank(L2));
+            qsranks(i) = max(hodlrrank(L1), hodlrrank(L2));
         else
             pp1 = pp(t', beta1);
             pm1 = pm(t', beta1);

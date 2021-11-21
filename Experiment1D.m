@@ -3,8 +3,8 @@ function Experiment1D
     % Values of N in the paper
     Ns = 2.^(13 : 17);
     
-    hmoption('threshold', 1e-7);
-    hmoption('block-size', 256);
+    hodlroption('threshold', 1e-7);
+    hodlroption('block-size', 256);
         
     data = zeros(length(Ns), 7);
     
@@ -31,8 +31,8 @@ function Experiment1D
             d2 = gamma(3 - alpha) .* (2 - t).^alpha;
             [am, ap] = fractional_symbol(alpha, n);
 
-            A = hm('toeplitz', am, ap, n);
-            A = hm('diagonal', ni*ones(n,1)) + hm('diagonal', d1) * A + hm('diagonal', d2) * A';
+            A = hodlr('toeplitz', am, ap, n);
+            A = hodlr('diagonal', ni*ones(n,1)) + hodlr('diagonal', d1) * A + hodlr('diagonal', d2) * A';
 
             xi = t;
             b=h^(alpha)*(-32*(xi.^2+1/8*(2-xi).^2.*(8+xi.^2)-3/(3-alpha)*(xi.^3+(2-xi).^3)+3/((4-alpha)*(3-alpha))*(xi.^4+(2-xi).^4)))';
@@ -52,7 +52,7 @@ function Experiment1D
             data(i, 1) = timeit(@() toeplitz_system(am, ap, d1, d2, ni, b, P, gmres_tol));
             [x, data(i, 2)] = toeplitz_system(am, ap, d1, d2, ni, b, P, gmres_tol);
             data(i,3) = norm(mat_mul1D(am, ap, d1, d2, ni, x) - b)/norm(x);
-            data(i,7) = qsrank(A);
+            data(i,7) = hodlrrank(A);
         end
         
         if experiment == 1

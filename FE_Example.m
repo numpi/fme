@@ -1,6 +1,6 @@
 function FE_Example
 
-hmoption('threshold', 1e-8);
+hodlroption('threshold', 1e-8);
 show_plot = false;
 
 Ns = 2.^( 9 : 16 );
@@ -28,15 +28,15 @@ for k = 1 :  4
         [am1, ap1] = symbol_FE2(beta1, n);
         [am2, ap2] = symbol_FE2(beta2, n);
         
-        L1 = (h^(-beta1) / gamma(4-beta1)) * hm('toeplitz', am1, ap1, n);
-        L2 = (h^(-beta2) / gamma(4-beta2)) * hm('toeplitz', am2, ap2, n);
+        L1 = (h^(-beta1) / gamma(4-beta1)) * hodlr('toeplitz', am1, ap1, n);
+        L2 = (h^(-beta2) / gamma(4-beta2)) * hodlr('toeplitz', am2, ap2, n);
         
         L1 = L1 + L1';
         L2 = L2 + L2';
 
 	% Mass matrix
         sM = spdiags(ones(n, 1) * [1/6 2/3 1/6], -1:1, n, n);
-        M = hm('banded', sM, 1, 1);
+        M = hodlr('banded', sM, 1, 1);
         
         % Choose a reasonable time step for this problem
         dt = .1;
@@ -50,7 +50,7 @@ for k = 1 :  4
         if k <= 2        
             L1s = ek_struct(L1, false);
             L2s = ek_struct(L2, false);
-            qsranks(i) = max(hmrank(L1), hmrank(L2));
+            qsranks(i) = max(hodlrrank(L1), hodlrrank(L2));
         else
             pp1 = ones(n, 1); % pp(t', beta1);
             pm1 = ones(n, 1); % pm(t', beta1);
