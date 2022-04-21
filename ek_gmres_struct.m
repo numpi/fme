@@ -18,6 +18,7 @@ S.solve = @(nu, mu, x) gmres_solve(nu, mu, Afun, Pfun, x);
 S.multiply = @(rho, eta, x) rho * (Afun(x)) - eta * x;
 S.nrm = nrm; 
 S.isreal = true;
+S.issymmetric = false;
 
     function y = gmres_solve(nu, mu, Afun, Pfun, x)
         if nu > mu
